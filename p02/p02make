@@ -1,0 +1,40 @@
+#p01make is the makefile for project p01, run with $make -f p01make
+#----------------------------------------------------------------------
+#Author: 1: Chase Minden
+#Student ID: *20469963
+#E-mail: caminden@uco.edu
+#Author: 2: Tommie Walker
+#Student ID: *20422860
+#E-mail: twalker38@uco.edu
+#Course : CMSC 4023 - Programming Languages
+#CRN : 21950
+#Project: P01
+#Due Date: Febuary 26, 2020
+#Project Account number: tt068
+#---------------------------------------------------------------------
+
+obj =	p02.o \
+	p02lex.o \
+	p02par.o
+
+p02: ${obj}
+	g++ -o p02 ${obj} -lm -ll
+
+p02.o: p02.cpp p02lex.h
+	g++ -c -g p02.cpp
+
+p02lex.cpp: p02lex.l p02lex.h
+		lex p02lex.l
+		mv lex.yy.c p02lex.cpp
+
+p02lex.o:	p02lex.cpp p02lex.h
+		g++ -c p02lex.cpp
+		
+p02tkn.h	\
+p02par.cpp:	p02par.y
+		yacc -d -v p02par.y
+		mv y.tab.c p02par.cpp
+		cat y.tab.h > p02tkn.h		
+
+p02par.o:	p02par.cpp p02par.h
+		g++ -c -g p02par.cpp
